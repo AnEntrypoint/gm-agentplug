@@ -49,6 +49,7 @@ jobs:
           set -euo pipefail
           git submodule update --init --depth 1
           node scripts/check-runtime-tracked.mjs
+          node scripts/check-runtime-tracked.mjs --on-disk .
 
   prune-releases:
     runs-on: ubuntu-latest

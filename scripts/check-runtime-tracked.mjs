@@ -37,6 +37,28 @@ const toRegex = (pattern) => {
 }
 const matchers = patterns.map(toRegex)
 
+const onDisk = process.argv.indexOf('--on-disk')
+if (onDisk !== -1) {
+  const root = process.argv[onDisk + 1]
+  if (!root) {
+    console.error('usage: check-runtime-tracked.mjs --on-disk <dir>')
+    process.exit(2)
+  }
+  const listFiles = (dir, prefix = '') => readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const rel = prefix + entry.name
+    if (entry.isDirectory()) return entry.name === '.git' ? [] : listFiles(path.join(dir, entry.name), `${rel}/`)
+    return [rel]
+  })
+  const present = listFiles(root).filter((file) => matchers.some((re) => re.test(file)))
+  if (present.length > 0) {
+    console.error(`files under ${root} match the managed .gitignore runtime patterns:`)
+    for (const file of present) console.error(path.join(root, file))
+    process.exit(1)
+  }
+  console.log(`[ok] no file under ${root} matches ${patterns.length} managed runtime patterns`)
+  process.exit(0)
+}
+
 const submodules = execFileSync('git', ['config', '--file', '.gitmodules', '--get-regexp', '^submodule\\..*\\.path$'], { encoding: 'utf8' })
   .trim()
   .split('\n')
