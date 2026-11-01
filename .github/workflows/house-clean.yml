@@ -43,6 +43,12 @@ jobs:
             exit 1
           fi
           echo "[ok] no built artifacts or version pins tracked"
+      - name: Fail when a managed runtime path is tracked
+        shell: bash
+        run: |
+          set -euo pipefail
+          git submodule update --init --depth 1
+          node scripts/check-runtime-tracked.mjs
 
   prune-releases:
     runs-on: ubuntu-latest
