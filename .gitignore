@@ -67,6 +67,7 @@ tmp/
 .gm/constraints.md
 .gm/last-instruction-ts
 .gm/last-dispatch-ts
+.gm/last-dispatch-ts.tmp-*
 .gm/boot*.err
 .gm/boot*.out
 .gm/diag-*.out
