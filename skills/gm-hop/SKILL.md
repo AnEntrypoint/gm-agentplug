@@ -6,6 +6,8 @@ exposed_when: prd:pending JTBD XYPROB EARS INVEST THINSLICE SPIKE YAGNI LIVEPLAN
 
 # gm-hop
 
+**Handoff first.** A `gm-hop` call hands the principle to a background worker: it does not expand the procedure below into the caller's context. From an orchestrator, spawn one background Agent with the brick-wall opener, its own SESSION_ID and the hop arguments, then reply only with the launch receipt `launched hop=<principle>; surface=<path>; dispatch_id=<id>`. The procedure below runs inside that worker.
+
 Args: one JSON object `{"node":{"id":"<id>","label":"<Author - Title>","advocate":"<advocate spec>","links":[{"to":"<id>","guards":["<guard>"]}]},"surface":"<path>","session":"<SESSION_ID>","wave":"<wave>","depth":<n>,"rhetoric":""}`. `links` is sorted lexically by `to`. The payload is the only graph data a hop receives: never load `gm-graph.json`. `rhetoric`, `max_depth` (default 6, the wave's cap) and `wave` (names `.gm/pool/ledger-<wave>.txt`) are optional; `wave` is required for ledger lines. Missing `node`, `surface` or `session`: `VERDICT: NOT-APPLICABLE`, no writes or emission.
 
 Verbs: gm section 1. Code questions: codeinsight first, then `codesearch` literal rooted at the surface. `fs_read` only located paths.

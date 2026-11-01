@@ -6,6 +6,8 @@ exposed_when: prd:pending
 
 # gm-prd
 
+**Handoff first.** A `gm-prd` call hands the row to a background worker: it does not expand the stages below into the caller's context. From an orchestrator, spawn one background Agent with the brick-wall opener, its own SESSION_ID and `row=<id>; session=<SESSION_ID>`, then reply only with the launch receipt `launched row=<id>; dispatch_id=<id>`. The stages below run inside that worker.
+
 One row, one session. Stages run in order, none a subagent; the orchestrator spawns the verifier and CI lanes after handoff. Each writes a create-only receipt `.gm/receipts/<row>/NN-<STAGE>.md`. A refused stage re-reads the state the refusal names, fixes it, and retries once; only a stage still refused for the same cause becomes a blocker row `<row>-blocker-<session>` (`prd-add`) naming the external fact and clearing action. No skips. Verbs: gm section 1. This PRD tracker is separate from node traversal (gm-orchestrate): a row is not a node and never changes the frontier count.
 
 ## Procedure

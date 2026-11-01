@@ -6,6 +6,8 @@ exposed_when: prd:pending
 
 # gm-orchestrate
 
+**Handoff first.** This skill runs in the orchestrator, which launches workers and never runs their procedure itself. Each PRD row is one background Agent that loads `gm-prd` (`row=<id>; session=<SESSION_ID>`), and each hop is one background Agent that loads `gm-hop`; each gets the brick-wall opener and its own SESSION_ID. The orchestrator keeps only the launch receipt (the dispatch id) and never expands a row or hop procedure into its own context.
+
 Pool and publish rules. Shared rules (autonomy, git identity, CI read, collisions, exit): gm. Recovery: `docs/recovery.md`.
 
 `ceiling` = the harness's live concurrent-subagent limit, read from its refusal message (`You can run N subagents at once`) or from the harness, never written into this skill. It is the only bound on concurrency: `free` = ceiling - live. `live` = the count of live subagents. `floor` = min(2, ceiling). `shortfall` = live < floor with independent work open.
