@@ -181,6 +181,8 @@ Query and body: `query` is required in every mode. `pattern` aliases `query` and
 
 `fs_write` is project-only: it refuses any path outside the cwd project root, and `allowOutsideRoot` never widens a write. Memory files live in the project under `memory/`, never in the user config directory.
 
+`read_roots` in the project's `.gm/gm.config.json` declares sibling directories that `fs_read`, `fs_readdir` and `fs_stat` read with no per-call opt-in: `{"read_roots":["/workspace/cj"]}`. Each entry is an absolute existing directory that holds a project marker (the host rule above). Entries that are relative, hold a `..` segment or name a filesystem root are ignored. A path under an entry is read when it holds no `..` segment, and the host grants the entry's own directory, never an ancestor. `fs_write` and `fs_edit` ignore `read_roots`. Only the project's own config file is read, so a remote or user config tier cannot declare roots, and nothing in the config grants execution.
+
 `fs_write` exact-line form: `{"path","startLine","endLine","replacement"}` replaces lines `startLine` through `endLine` (1-based, inclusive) with `replacement`, one dispatch per edit:
 
 ```
