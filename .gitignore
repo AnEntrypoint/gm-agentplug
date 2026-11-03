@@ -125,6 +125,7 @@ tmp/
 .gm/.embed-generation.*
 .gm/browser-mutables.yml
 .gm/pw-sock-*/
+.playwriter/
 
 # agentplug-runner project-local runtime state (kv store, per-project
 # plugin-dispatch spool) -- transient, regenerated every session, same
